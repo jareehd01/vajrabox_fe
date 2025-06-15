@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { GOLD_RATE_API, GOLD_RATE_API_TOKEN } from "../utils/constants";
+import Marquee from "react-fast-marquee";
+import {
+  GOLD_RATE_API,
+  GOLD_RATE_API_TOKEN,
+  GOLD_CARAT_HALLMARK_MAPPING,
+} from "../utils/constants";
 
 const CurrentDayRateBanner = () => {
   const [goldRateData, setGoldRateData] = useState({
@@ -27,44 +32,66 @@ const CurrentDayRateBanner = () => {
     price_gram_14k: 5278.1077,
     price_gram_10k: 3770.0769,
   });
+
   useEffect(() => {
     getLiveGoldRate();
   }, []);
 
   const getLiveGoldRate = async () => {
-    // setGoldRateData(data);
-    // try {
-    //     const response = await fetch(GOLD_RATE_API, {
-    //         method: "GET",
-    //         headers: {
-    //             "x-access-token": GOLD_RATE_API_TOKEN
-    //         }
-    //     });
-    //     const data = await response.json();
-    //     console.log(data);
-    //     // Handle the data as needed
-    // } catch (error) {
-    //     console.error("Error fetching gold rate:", error);
-    // }
+    // Your API call implementation
   };
 
   return (
-    <div className="bg-gradient-to-r from-amber-700 to-amber-500 h-8 flex items-center shadow-md fixed top-0 w-full z-50 overflow-hidden">
-      <div className="whitespace-nowrap flex animate-marquee w-max">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div
-            key={i}
-            className="flex space-x-6 px-6 text-amber-50 font-medium tracking-wider"
-          >
-            <span className="inline-flex items-center">
-              LIVE GOLD RATE: ₹{goldRateData.price_gram_24k}/g (24K)
-              <span className="mx-4">•</span>
-              {goldRateData.chp >= 0 ? "↑" : "↓"} {Math.abs(goldRateData.chp)}%
-              <span className="mx-4">•</span>
-            </span>
-          </div>
-        ))}
-      </div>
+    <div className="bg-emerald-950 h-8 flex items-center shadow-md top-0 w-full z-50 overflow-hidden">
+      <Marquee
+        className="w-full"
+        speed={50}
+        gradient={false}
+        pauseOnHover={true}
+        loop={0}
+      >
+        <div className="flex space-x-12 px-6 font-small tracking-wider">
+          {[
+            { carat: "10K", value: goldRateData.price_gram_10k },
+            { carat: "14K", value: goldRateData.price_gram_14k },
+            { carat: "16K", value: goldRateData.price_gram_16k },
+            { carat: "18K", value: goldRateData.price_gram_18k },
+            { carat: "22K", value: goldRateData.price_gram_22k },
+            { carat: "24K", value: goldRateData.price_gram_24k },
+          ].map(({ carat, value }) => {
+            const hallmark = GOLD_CARAT_HALLMARK_MAPPING[carat];
+            return (
+              <span 
+                key={carat} 
+                className="inline-flex items-center px-2 text-sm font-medium"
+                style={{
+                  background: "linear-gradient(90deg, #c19a42, #edb125 15%, #c19a42 35%, #faf5b7 50%, #c19a42 65%, #edb125 85%, #c19a42)",
+                  backgroundSize: "200% auto",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  color: "transparent",
+                  animation: "shine 3s linear infinite",
+                }}
+              >
+                • {carat.toUpperCase()} Gold ({hallmark}) : ₹
+                {value
+                  ? value.toLocaleString("en-IN", { maximumFractionDigits: 0 })
+                  : "-"}{" "}
+                per gram
+              </span>
+            );
+          })}
+        </div>
+      </Marquee>
+      
+      {/* Add the animation keyframes */}
+      <style jsx>{`
+        @keyframes shine {
+          to {
+            background-position: 100% center;
+          }
+        }
+      `}</style>
     </div>
   );
 };
