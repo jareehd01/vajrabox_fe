@@ -32,7 +32,7 @@ const Filters = () => {
     <div className="mb-4 border-b pb-2">
       <button
         onClick={() => toggleSection(id)}
-        className="w-full text-left font-medium text-lg flex justify-between items-center"
+        className="w-full text-left font-heading text-lg text-emerald-900 flex justify-between items-center"
       >
         {title}
         <span>{openSection === id ? "−" : "+"}</span>
@@ -48,8 +48,8 @@ const Filters = () => {
   );
 
   return (
-    <div className="w-full md:w-1/4 space-y-4 bg-white p-6 rounded-lg shadow-sm">
-      <h3 className="font-bold text-xl mb-4">Filters</h3>
+    <div className="w-full md:w-1/4 space-y-4 bg-white p-6 rounded-lg">
+      <h3 className="font-body font-semibold text-emerald-950 text-2xl mb-4">Filters</h3>
 
       <Section title="Price" id="price">
         <div className="flex justify-between mb-2 text-sm">

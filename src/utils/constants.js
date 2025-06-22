@@ -14,6 +14,7 @@ export const GOLD_CARAT_HALLMARK_MAPPING = {
 
 export const JEWELLERY_CATEGORIES = {
   RINGS: [
+    "All Rings",
     "Solitaire Rings",
     "Engagement Rings",
     "Love Rings",
@@ -27,6 +28,7 @@ export const JEWELLERY_CATEGORIES = {
     "Men's Rings",
   ],
   NECKLACES: [
+    "All Necklaces",
     "Solitaire Necklaces",
     "Unique Necklaces",
     "Tennis Necklaces",
@@ -37,6 +39,7 @@ export const JEWELLERY_CATEGORIES = {
     "V-Shaped Necklaces",
   ],
   EARRINGS: [
+    "All Earrings",
     "Stud Earrings",
     "Hoop Earrings",
     "Dangle Earrings",
@@ -47,6 +50,7 @@ export const JEWELLERY_CATEGORIES = {
     "Teardrop Earrings",
   ],
   MANGALSUTRA: [
+    "All Mangalsutra",
     "Traditional Mangalsutra",
     "Contemporary Mangalsutra",
     "Diamond Mangalsutra",
@@ -54,6 +58,7 @@ export const JEWELLERY_CATEGORIES = {
     "Customizable Mangalsutra",
   ],
   PENDANTS: [
+    "All Pendants",
     "Solitaire Pendants",
     "Heart Pendants",
     "Initial Pendants",
@@ -63,6 +68,7 @@ export const JEWELLERY_CATEGORIES = {
     "Minimalist Pendants",
   ],
   BRACELETS: [
+    "All Bracelets",
     "Tennis Bracelets",
     "Bangle Bracelets",
     "Charm Bracelets",
@@ -72,6 +78,7 @@ export const JEWELLERY_CATEGORIES = {
     "Adjustable Bracelets",
   ],
   NOSEPINS: [
+    "All Nosepins",
     "Diamond Nosepins",
     "Gold Nosepins",
     "Minimalist Nosepins",
@@ -80,6 +87,7 @@ export const JEWELLERY_CATEGORIES = {
     "Hoops Nosepins",
   ],
   BANGLES: [
+    "All Bangles",
     "Classic Bangles",
     "Diamond Bangles",
     "Stackable Bangles",
@@ -89,3 +97,114 @@ export const JEWELLERY_CATEGORIES = {
     "Bridal Bangles",
   ],
 };
+
+
+export const JEWELLERY_SAMPLE_DATA = [
+  {
+    id: "prod_001",
+    name: "Classic Solitaire",
+    category: "Rings", // Can also be "Necklaces", "Earrings", etc.
+    subcategory: "Solitaire Rings",
+    price: 1200,
+    discountPrice: 999, // Optional
+    material: "18K White Gold",
+    diamond: {
+      carat: 0.5,
+      cut: "Excellent",
+      color: "D",
+      clarity: "VS1",
+    },
+    isReadyToShip: true,
+    isBestSeller: true,
+  },
+  {
+    id: "prod_002",
+    name: "Eternity Halo",
+    category: "Rings",
+    subcategory: "Halo Rings",
+    price: 2500,
+    material: "14K Rose Gold",
+    diamond: {
+      carat: 0.75,
+      cut: "Very Good",
+      color: "F",
+      clarity: "SI1",
+    },
+    isNewArrival: true,
+  },
+  {
+    id: "prod_003",
+    name: "Tennis Bracelet",
+    category: "Bracelets",
+    subcategory: "Tennis Bracelets",
+    price: 3200,
+    material: "Platinum",
+    diamond: {
+      carat: 2.0, // Total carat weight
+      cut: "Ideal",
+      color: "G",
+      clarity: "VS2",
+    },
+    isCustomizable: true,
+  },
+  {
+    id: "prod_004",
+    name: "Delicate Pendant",
+    category: "Pendants",
+    subcategory: "Solitaire Pendants",
+    price: 800,
+    material: "18K Yellow Gold",
+    diamond: {
+      carat: 0.25,
+      cut: "Good",
+      color: "H",
+      clarity: "SI2",
+    },
+    isReadyToShip: true,
+  },
+  {
+    id: "prod_005",
+    name: "Vintage Choker",
+    category: "Necklaces",
+    subcategory: "Choker Necklaces",
+    price: 1800,
+    material: "18K White Gold",
+    diamond: {
+      carat: 1.2,
+      cut: "Excellent",
+      color: "E",
+      clarity: "VVS2",
+    },
+    isLimitedEdition: true,
+  },
+  {
+    id: "prod_006",
+    name: "Huggie Hoops",
+    category: "Earrings",
+    subcategory: "Hoop Earrings",
+    price: 650,
+    material: "14K Yellow Gold",
+    diamond: {
+      carat: 0.1, // Per earring
+      cut: "Very Good",
+      color: "I",
+      clarity: "SI1",
+    },
+    isBestSeller: true,
+  },
+  {
+    id: "prod_007",
+    name: "Bridal Mangalsutra",
+    category: "Mangalsutra",
+    subcategory: "Diamond Mangalsutra",
+    price: 1500,
+    material: "22K Gold",
+    diamond: {
+      carat: 0.5,
+      cut: "Good",
+      color: "G",
+      clarity: "SI2",
+    },
+    isBridalCollection: true,
+  },
+];

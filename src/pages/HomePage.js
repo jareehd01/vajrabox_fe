@@ -1,8 +1,8 @@
 const HomePage = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="flex container mx-auto px-4">
       {/* Your homepage content */}
-      <h1 className="text-4xl font-bold mb-8">Welcome to Our Jewelry Store</h1>
+      <h1 className="text-4xl font-bold p-6 text-center w-full">Welcome to VajraBox</h1>
       {/* Featured products, etc */}
     </div>
   );
