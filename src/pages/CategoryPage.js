@@ -39,9 +39,9 @@ const CategoryPage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row gap-8">
-        <Filters categoryType={categoryType} />
+        {/* <Filters categoryType={categoryType} /> */}
         
-        <div className="w-full md:w-3/4">
+        <div className="w-full">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2 capitalize">
               {categoryType.replace(/-/g, " ")} Collection
