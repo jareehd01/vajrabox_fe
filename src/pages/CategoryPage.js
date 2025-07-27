@@ -74,7 +74,8 @@ const CategoryPage = () => {
               filteredProducts.map((product) => (
                 <div 
                   key={product.id} 
-                  className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => window.location.href = `/item/${product.id}`}
                 >
                   <div className="h-48 bg-gray-100 rounded mb-4 flex items-center justify-center">
                     <span className="text-gray-400">{product.name}</span>

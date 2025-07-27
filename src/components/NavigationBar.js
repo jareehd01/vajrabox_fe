@@ -1,11 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiUser, FiMenu, FiX } from 'react-icons/fi';
+import { useAppSelector } from '../store/hooks';
 import MenuBar from './MenuBar';
 
 const NavigationBar = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const panelRef = useRef(null);
+  
+  // Get cart and wishlist counts from Redux store
+  const cartTotalQuantity = useAppSelector(state => state.cart.totalQuantity);
+  const wishlistCount = useAppSelector(state => state.wishlist.items.length);
 
   // Handle click outside
   useEffect(() => {
@@ -34,61 +39,69 @@ const NavigationBar = () => {
     setIsPanelOpen(false);
   };
 
-  return (
+return (
     <>
-      <div className="h-16 bg-white shadow-sm flex items-center px-4 relative z-50">
-        {/* Left - Menu Button */}
-        <div className="flex flex-1 min-w-0">
-          <button
-            className="p-2 text-gray-600 hover:text-amber-600 focus:outline-none"
-            onClick={() => setIsPanelOpen(!isPanelOpen)}
-            aria-label={isPanelOpen ? "Close menu" : "Open menu"}
-          >
-            {isPanelOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-          </button>
+        <div className="h-14 sm:h-16 bg-white shadow-sm flex items-center px-2 sm:px-3 md:px-4 relative z-50">
+            {/* Left - Menu Button */}
+            <div className="flex items-center justify-start w-1/3 min-w-0">
+                <button
+                    className="p-2 text-gray-600 hover:text-amber-600 focus:outline-none"
+                    onClick={() => setIsPanelOpen(!isPanelOpen)}
+                    aria-label={isPanelOpen ? "Close menu" : "Open menu"}
+                >
+                    {isPanelOpen ? (
+                        <FiX className="w-5 h-5 sm:w-6 sm:h-6 md:w-6 md:h-6" />
+                    ) : (
+                        <FiMenu className="w-5 h-5 sm:w-6 sm:h-6 md:w-6 md:h-6" />
+                    )}
+                </button>
+            </div>
+
+            {/* Center - Logo */}
+            <div className="flex items-center justify-center w-1/3 min-w-0 absolute left-1/2 transform -translate-x-1/2">
+                <h1 className="font-heading text-base sm:text-lg md:text-xl font-bold text-black-600 truncate">
+                    LOGO
+                </h1>
+            </div>
+
+            {/* Right - Icons */}
+            <div className="flex items-center justify-end w-1/3 min-w-0 ml-auto space-x-2 sm:space-x-3 md:space-x-4">
+                <Link to="/wishlist" className="relative p-2 text-gray-600 hover:text-amber-600">
+                    <FiHeart className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5" />
+                    {wishlistCount > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                            {wishlistCount}
+                        </span>
+                    )}
+                </Link>
+                <Link to="/cart" className="relative p-2 text-gray-600 hover:text-amber-600">
+                    <FiShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5" />
+                    {cartTotalQuantity > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                            {cartTotalQuantity}
+                        </span>
+                    )}
+                </Link>
+                <button className="p-2 text-gray-600 hover:text-amber-600">
+                    <FiUser className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5" />
+                </button>
+            </div>
         </div>
 
-        {/* Center - Logo */}
-        <div className="flex flex-1 justify-center min-w-0">
-          <h1 className="font-heading text-2xl font-bold text-black-600 truncate">
-            LOGO
-          </h1>
-        </div>
-
-        {/* Right - Icons */}
-        <div className="flex flex-1 justify-end space-x-6 min-w-0">
-          <button className="relative p-2 text-gray-600 hover:text-amber-600">
-            <FiHeart size={20} />
-            <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              3
-            </span>
-          </button>
-          <button className="relative p-2 text-gray-600 hover:text-amber-600">
-            <FiShoppingCart size={20} />
-            <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              5
-            </span>
-          </button>
-          <button className="p-2 text-gray-600 hover:text-amber-600">
-            <FiUser size={20} />
-          </button>
-        </div>
-      </div>
-
-      {/* Left Panel Drawer */}
-      {isPanelOpen && (
-        <div className="fixed z-40 inset-0 flex pt-16">
-          <div
-            className="w-64 my-10 bg-white h-full shadow-lg relative animate-slide-in-left overflow-y-auto"
-            ref={panelRef}
-            onMouseLeave={handleMouseLeave}
-          >
-            <MenuBar onClose={() => setIsPanelOpen(false)} />
-          </div>
-        </div>
-      )}
+        {/* Left Panel Drawer */}
+        {isPanelOpen && (
+            <div className="fixed z-40 inset-0 flex pt-14 sm:pt-16">
+                <div
+                    className="w-48 sm:w-56 md:w-64 my-8 sm:my-10 bg-white h-full shadow-lg relative animate-slide-in-left overflow-y-auto"
+                    ref={panelRef}
+                    onMouseLeave={handleMouseLeave}
+                >
+                    <MenuBar onClose={() => setIsPanelOpen(false)} />
+                </div>
+            </div>
+        )}
     </>
-  );
+);
 };
 
 export default NavigationBar;
