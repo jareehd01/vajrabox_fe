@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiUser, FiMenu, FiX } from 'react-icons/fi';
 import { useAppSelector } from '../store/hooks';
 import MenuBar from './MenuBar';
+import LoginSlider from './LoginSlider'; // (to be created)
 
 const NavigationBar = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -11,6 +12,9 @@ const NavigationBar = () => {
   // Get cart and wishlist counts from Redux store
   const cartTotalQuantity = useAppSelector(state => state.cart.totalQuantity);
   const wishlistCount = useAppSelector(state => state.wishlist.items.length);
+  const is_user_loggedin = useAppSelector(state => state.user.is_user_loggedin);
+  const [isLoginSliderOpen, setIsLoginSliderOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Handle click outside
   useEffect(() => {
@@ -37,6 +41,14 @@ const NavigationBar = () => {
   // Handle mouse leave on panel
   const handleMouseLeave = () => {
     setIsPanelOpen(false);
+  };
+
+  const handleUserIconClick = () => {
+    if (is_user_loggedin) {
+      navigate('/profile');
+    } else {
+      setIsLoginSliderOpen(true);
+    }
   };
 
 return (
@@ -82,7 +94,7 @@ return (
                         </span>
                     )}
                 </Link>
-                <button className="p-2 text-gray-600 hover:text-amber-600">
+                <button className="p-2 text-gray-600 hover:text-amber-600" onClick={handleUserIconClick}>
                     <FiUser className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5" />
                 </button>
             </div>
@@ -100,6 +112,10 @@ return (
                 </div>
             </div>
         )}
+      {/* Login Slider */}
+      {isLoginSliderOpen && !is_user_loggedin && (
+        <LoginSlider onClose={() => setIsLoginSliderOpen(false)} />
+      )}
     </>
 );
 };

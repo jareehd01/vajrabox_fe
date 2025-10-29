@@ -1,10 +1,13 @@
 import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { removeFromWishlist, clearWishlist } from '../store/slices/wishlistSlice';
+import { removeFromWishlist, clearWishlist, addToWishlist } from '../store/slices/wishlistSlice';
 import { addToCart } from '../store/slices/cartSlice';
-import { FiTrash2, FiShoppingCart } from 'react-icons/fi';
+import { FiTrash2, FiShoppingCart, FiCreditCard, FiPlus } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import { addDemoDataToWishlist } from '../utils/demoData';
 
 const Wishlist = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const wishlistItems = useAppSelector(state => state.wishlist.items);
 
   const handleRemoveFromWishlist = (id) => {
@@ -28,6 +31,18 @@ const Wishlist = () => {
     dispatch(clearWishlist());
   };
 
+  const handleCheckout = () => {
+    if (wishlistItems.length === 0) {
+      alert('Your wishlist is empty');
+      return;
+    }
+    navigate('/checkout');
+  };
+
+  const handleAddDemoData = () => {
+    addDemoDataToWishlist(dispatch, addToWishlist);
+  };
+
   if (wishlistItems.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -41,12 +56,28 @@ const Wishlist = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Your Wishlist ({wishlistItems.length} items)</h2>
-        <button
-          onClick={handleClearWishlist}
-          className="text-red-600 hover:text-red-800"
-        >
-          Clear Wishlist
-        </button>
+        <div className="flex space-x-4">
+          <button
+            onClick={handleAddDemoData}
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded flex items-center"
+          >
+            <FiPlus className="mr-2" size={16} />
+            Add Demo Items
+          </button>
+          <button
+            onClick={handleCheckout}
+            className="bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded flex items-center"
+          >
+            <FiCreditCard className="mr-2" size={16} />
+            Checkout
+          </button>
+          <button
+            onClick={handleClearWishlist}
+            className="text-red-600 hover:text-red-800"
+          >
+            Clear Wishlist
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
