@@ -1,31 +1,31 @@
-import { FiTruck, FiRefreshCw, FiAward, FiSettings, FiCreditCard } from 'react-icons/fi';
+import { FiShield, FiPackage, FiRepeat, FiFeather, FiHeart } from 'react-icons/fi';
 
 const WhyChooseSection = () => {
   const features = [
     {
-      icon: <FiAward className="w-12 h-12" />,
-      title: "Certified Diamond Jewellery",
-      description: "Our jewellery is 100% certified for authenticity."
+      icon: <FiHeart className="w-12 h-12" />,
+      title: "Ethical & Sustainable",
+      description: "Feel good about your jewellery, crafted with ethically sourced, lab-grown diamonds."
     },
     {
-      icon: <FiTruck className="w-12 h-12" />,
-      title: "Free Insured Shipping",
-      description: "Enjoy free shipping with insured delivery."
+      icon: <FiShield className="w-12 h-12" />,
+      title: "Authenticity Guaranteed",
+      description: "Every diamond is 100% certified, ensuring your peace of mind."
     },
     {
-      icon: <FiRefreshCw className="w-12 h-12" />,
-      title: "100% Exchange & Return",
-      description: "Return or exchange hassle-free if you change your mind."
+      icon: <FiFeather className="w-12 h-12" />,
+      title: "Your Style, Your Way",
+      description: "Customize your jewellery to match your unique personality and taste."
     },
     {
-      icon: <FiSettings className="w-12 h-12" />,
-      title: "Customisable Designs",
-      description: "Get your jewellery customised and wear it your way."
+      icon: <FiPackage className="w-12 h-12" />,
+      title: "Secure & Swift Delivery",
+      description: "Enjoy complimentary, insured shipping on every single order."
     },
     {
-      icon: <FiCreditCard className="w-12 h-12" />,
-      title: "10 Days Easy Return",
-      description: "10-day easy return for a worry-free purchase."
+      icon: <FiRepeat className="w-12 h-12" />,
+      title: "Effortless Returns",
+      description: "Hassle-free returns and exchanges if you're not completely satisfied."
     }
   ];
 
@@ -33,7 +33,7 @@ const WhyChooseSection = () => {
     <section className="py-12 bg-gray-50 rounded-lg mb-8">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">
-          VajraBox Provides You More Reasons to Choose Lab Grown Diamond Jewellery
+          Experience the VajraBox Difference
         </h2>
       </div>
 
