@@ -9,8 +9,8 @@ module.exports = {
         marquee: 'marquee 30s linear infinite',
       },
       fontFamily: {
-        heading: ['"Bodoni Moda"', 'serif'],
-        body: ['"Lora"', 'serif'], // A softer, more readable serif
+        heading: ['"Cormorant Garamond"', 'serif'],
+        body: ['"Cormorant Garamond"', 'serif'],
       },
       keyframes: {
         marquee: {

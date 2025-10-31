@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { JEWELLERY_CATEGORIES, JEWELLERY_SAMPLE_DATA } from '../utils/constants';
-import Filters from '../components/Filters';
 import { useLocation } from 'react-router-dom';
 
 const CategoryPage = () => {
@@ -57,7 +56,7 @@ const CategoryPage = () => {
               <button
                 key={subcategory}
                 onClick={() => setActiveSubcategory(subcategory)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-full text-base font-medium transition-colors ${
                   activeSubcategory === subcategory
                     ? 'bg-amber-600 text-white'
                     : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
@@ -72,17 +71,17 @@ const CategoryPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
-                <div 
+                <Link 
                   key={product.id} 
+                  to={`/item/${product.id}`}
                   className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                  onClick={() => window.location.href = `/item/${product.id}`}
                 >
                   <div className="h-48 bg-gray-100 rounded mb-4 flex items-center justify-center">
                     <span className="text-gray-400">{product.name}</span>
                   </div>
                   <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                   <p className="text-amber-600 font-bold">${product.price.toLocaleString()}</p>
-                </div>
+                </Link>
               ))
             ) : (
               <div className="col-span-3 text-center py-12 text-gray-500">

@@ -1,276 +1,197 @@
-import React, { useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { removeFromCart, updateQuantity, clearCart } from '../store/slices/cartSlice';
-import { clearWishlist } from '../store/slices/wishlistSlice';
-import { FiTrash2, FiMinus, FiPlus, FiArrowLeft, FiHeart, FiShoppingBag, FiCheck } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Checkbox } from "../components/ui/checkbox";
+import { ArrowLeft, Minus, Plus, Trash2, CreditCard } from "lucide-react";
+import { Link } from "react-router-dom";
+import NavigationBar from "../components/NavigationBar";
 
 const CheckoutPage = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const cartItems = useAppSelector(state => state.cart.items);
-  const wishlistItems = useAppSelector(state => state.wishlist.items);
-  
-  // Combine cart and wishlist items for checkout
-  const checkoutItems = [...cartItems, ...wishlistItems.map(item => ({ ...item, quantity: 1, totalPrice: item.price }))];
-  
-  const [billingInfo, setBillingInfo] = useState({
-    fullName: 'Fahatmah Mabang',
-    email: '',
-    phone: '',
-    address: '',
-    billingSameAsShipping: true
-  });
-  
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('apple-pay');
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [promoCode, setPromoCode] = useState('');
-  const [promoApplied, setPromoApplied] = useState(false);
-  const [promoDiscount, setPromoDiscount] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [promoCode, setPromoCode] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState("apple-pay");
+  const [sameAsShipping, setSameAsShipping] = useState(true);
 
-  const shippingCost = 150;
-  const subtotal = checkoutItems.reduce((sum, item) => sum + (item.totalPrice || item.price), 0);
-  const discount = promoApplied ? promoDiscount : 0;
-  const total = subtotal + shippingCost - discount;
-
-  const handleQuantityChange = (itemId, newQuantity) => {
-    if (newQuantity > 0) {
-      dispatch(updateQuantity({ id: itemId, quantity: newQuantity }));
-    } else {
-      dispatch(removeFromCart(itemId));
-    }
-  };
-
-  const handleRemoveItem = (itemId) => {
-    dispatch(removeFromCart(itemId));
-  };
-
-  const handleInputChange = (field, value) => {
-    setBillingInfo(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handlePaymentMethodChange = (method) => {
-    setSelectedPaymentMethod(method);
-  };
-
-  const handlePromoCodeApply = () => {
-    if (promoCode.trim() === 'WELCOME10') {
-      setPromoApplied(true);
-      setPromoDiscount(500);
-      alert('Promo code applied successfully!');
-    } else if (promoCode.trim() !== '') {
-      alert('Invalid promo code. Please try again.');
-    }
-  };
-
-  const handleCheckout = () => {
-    if (!agreedToTerms) {
-      alert('Please agree to the Terms & Conditions');
-      return;
-    }
-    
-    // Process checkout
-    dispatch(clearCart());
-    dispatch(clearWishlist());
-    alert('Order placed successfully!');
-    navigate('/');
-  };
-
-  const formatPrice = (price) => {
-    return `P${price.toLocaleString()}`;
-  };
+  const itemPrice = 1200;
+  const shipping = 150;
+  const discount = 0;
+  const subtotal = itemPrice * quantity;
+  const total = subtotal + shipping - discount;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">      
+      <main className="container mx-auto px-4 py-12 max-w-7xl">
+        <div className="grid lg:grid-cols-5 gap-12">
+          {/* Order Summary - Left Side */}
+          <div className="lg:col-span-2">
+            <Link 
+              to="/rings" 
+              className="inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors mb-8 group"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+              <span className="font-medium">Order Summary</span>
+            </Link>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Section - Order Summary */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="flex items-center mb-6">
-              <button 
-                onClick={() => navigate(-1)}
-                className="text-gray-600 hover:text-gray-800 mr-2"
-              >
-                <FiArrowLeft size={16} />
-              </button>
-              <h2 className="text-xl font-bold">Order Summary</h2>
-            </div>
-
-            {/* Product List */}
-            <div className="space-y-4 mb-6">
-              {checkoutItems.map((item) => (
-                <div key={item.id} className="flex items-center space-x-4 p-4 border rounded-lg">
-                  <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <span className="text-gray-400 text-xs">{item.name}</span>
-                  </div>
+            {/* Product Card */}
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-lg mb-6">
+              <div className="flex gap-6">
+                <div className="w-32 h-32 rounded-xl overflow-hidden bg-muted flex-shrink-0 border border-border/50">
+                  <img
+                    src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=400&fit=crop"
+                    alt="Classic Solitaire"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-serif text-xl font-semibold mb-2">Classic Solitaire</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    .99 ET (US 6)/14 8.5) White/Beige Accents
+                  </p>
+                  <p className="text-2xl font-serif font-bold text-primary mb-4">
+                    ₱{itemPrice.toLocaleString()}
+                  </p>
                   
-                  <div className="flex-1">
-                    <h3 className="font-medium text-sm">{item.name}</h3>
-                    <p className="text-gray-500 text-xs">39 EU (US 8/PH 8.5) White/Beige Accents</p>
-                    <p className="font-bold text-orange-600">{formatPrice(item.price)}</p>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <div className="flex items-center border rounded-lg">
-                      <button 
-                        onClick={() => handleQuantityChange(item.id, (item.quantity || 1) - 1)}
-                        className="p-2 hover:bg-gray-100"
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 border border-border rounded-lg p-1">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="w-8 h-8 flex items-center justify-center hover:bg-accent rounded transition-colors"
                       >
-                        <FiMinus size={12} />
+                        <Minus className="w-4 h-4" />
                       </button>
-                      <span className="px-3 py-1 text-sm">{item.quantity || 1}</span>
-                      <button 
-                        onClick={() => handleQuantityChange(item.id, (item.quantity || 1) + 1)}
-                        className="p-2 hover:bg-gray-100"
+                      <span className="w-8 text-center font-medium">{quantity}</span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="w-8 h-8 flex items-center justify-center hover:bg-accent rounded transition-colors"
                       >
-                        <FiPlus size={12} />
+                        <Plus className="w-4 h-4" />
                       </button>
                     </div>
-                    <button 
-                      onClick={() => handleRemoveItem(item.id)}
-                      className="text-red-500 hover:text-red-700 p-1"
-                    >
-                      <FiTrash2 size={16} />
+                    
+                    <button className="text-destructive hover:bg-destructive/10 p-2 rounded-lg transition-colors">
+                      <Trash2 className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
 
             {/* Promo Code */}
-            <div className="p-4 bg-gray-50 rounded-lg mb-4">
-              <div className="flex items-center space-x-2">
-                <input
-                  type="text"
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-lg mb-6">
+              <div className="flex gap-3">
+                <Input
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value)}
                   placeholder="Enter promo code"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="flex-1 border-border focus:border-primary"
                 />
-                <button
-                  onClick={handlePromoCodeApply}
-                  className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm"
-                >
+                <Button className="bg-accent hover:bg-accent/90 text-accent-foreground px-6">
                   Apply
-                </button>
+                </Button>
               </div>
-              {promoApplied && (
-                <div className="flex items-center justify-between mt-2">
-                  <span className="font-medium text-green-600">WELCOME10</span>
-                  <span className="bg-green-500 text-white px-3 py-1 rounded-full text-xs">Applied</span>
-                </div>
-              )}
             </div>
 
             {/* Shipping */}
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg mb-6">
-              <div>
-                <p className="font-medium">Shipping</p>
-                <p className="text-sm text-gray-600">Standard Via J&T Express, Metro Manila only</p>
-              </div>
-              <span className="font-bold">{formatPrice(shippingCost)}</span>
-            </div>
-
-            {/* Price Breakdown */}
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 mb-6">
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>{formatPrice(subtotal)}</span>
-                </div>
-                <div className="flex justify-between text-green-600">
-                  <span>Discount (Promo Code: {promoCode})</span>
-                  <span>-{formatPrice(discount)}</span>
-                </div>
-                <div className="flex justify-between font-bold text-lg">
-                  <span>Total</span>
-                  <span>{formatPrice(total)}</span>
-                </div>
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-lg mb-6">
+              <h3 className="font-serif text-lg font-semibold mb-3">Shipping</h3>
+              <div className="flex justify-between items-center">
+                <p className="text-sm text-muted-foreground">
+                  Standard Via J&T Express, Metro Manila only
+                </p>
+                <p className="font-semibold">₱{shipping}</p>
               </div>
             </div>
 
-
-          </div>
-
-          {/* Right Section - Billing & Payment */}
-          <div className="space-y-6">
-            {/* Billing Information */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-bold mb-6">Billing Information</h2>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name *
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={billingInfo.fullName}
-                      onChange={(e) => handleInputChange('fullName', e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    />
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
-                      <FiCheck className="text-green-500" size={16} />
-                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
+            {/* Price Summary */}
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 border-2 border-primary/20 rounded-2xl p-6 shadow-xl">
+              <div className="space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="font-medium">₱{subtotal.toLocaleString()}</span>
+                </div>
+                {discount > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-emerald-600">Discount (Promo Code)</span>
+                    <span className="text-emerald-600 font-medium">-₱{discount}</span>
+                  </div>
+                )}
+                <div className="border-t border-border/50 pt-3">
+                  <div className="flex justify-between items-center">
+                    <span className="font-serif text-xl font-bold">Total</span>
+                    <span className="font-serif text-2xl font-bold text-primary">
+                      ₱{total.toLocaleString()}
+                    </span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Billing & Payment - Right Side */}
+          <div className="lg:col-span-3">
+            {/* Billing Information */}
+            <div className="bg-card border border-border rounded-2xl p-8 shadow-lg mb-6">
+              <h2 className="font-serif text-2xl font-bold mb-6">Billing Information</h2>
+              
+              <div className="space-y-5">
+                <div>
+                  <Label htmlFor="fullName" className="text-sm font-medium mb-2 block">
+                    Full Name <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="fullName"
+                    placeholder="Faharmah Mabang"
+                    className="border-border focus:border-primary"
+                  />
+                </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
+                  <Label htmlFor="email" className="text-sm font-medium mb-2 block">
+                    Email Address <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="email"
                     type="email"
-                    value={billingInfo.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
                     placeholder="e.g. johndoewilliams@gmail.com"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="border-border focus:border-primary"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number *
-                  </label>
-                  <input
+                  <Label htmlFor="phone" className="text-sm font-medium mb-2 block">
+                    Phone Number <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="phone"
                     type="tel"
-                    value={billingInfo.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
                     placeholder="e.g. 0912 345 6789"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="border-border focus:border-primary"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Billing Address *
-                  </label>
-                  <input
-                    type="text"
-                    value={billingInfo.address}
-                    onChange={(e) => handleInputChange('address', e.target.value)}
+                  <Label htmlFor="address" className="text-sm font-medium mb-2 block">
+                    Billing Address <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="address"
                     placeholder="Enter full address"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="border-border focus:border-primary"
                   />
                 </div>
 
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="billingSameAsShipping"
-                    checked={billingInfo.billingSameAsShipping}
-                    onChange={(e) => handleInputChange('billingSameAsShipping', e.target.checked)}
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                <div className="flex items-center space-x-2 pt-2">
+                  <Checkbox
+                    id="sameShipping"
+                    checked={sameAsShipping}
+                    onCheckedChange={(checked) => setSameAsShipping(Boolean(checked))}
                   />
-                  <label htmlFor="billingSameAsShipping" className="ml-2 text-sm text-gray-700">
+                  <label
+                    htmlFor="sameShipping"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  >
                     Billing address same as shipping
                   </label>
                 </div>
@@ -278,60 +199,64 @@ const CheckoutPage = () => {
             </div>
 
             {/* Payment Method */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-bold mb-6">Payment Method</h2>
+            <div className="bg-card border border-border rounded-2xl p-8 shadow-lg mb-6">
+              <h2 className="font-serif text-2xl font-bold mb-6">Payment Method</h2>
               
-              <div className="flex space-x-4 mb-6">
-                {['visa', 'mastercard', 'apple-pay', 'paypal', 'google-pay'].map((method) => (
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mb-6">
+                {[
+                  { id: "visa", label: "VISA" },
+                  { id: "mastercard", label: "MASTERCARD" },
+                  { id: "apple-pay", label: "APPLE PAY" },
+                  { id: "paypal", label: "PAYPAL" },
+                  { id: "google-pay", label: "GOOGLE PAY" },
+                ].map((method) => (
                   <button
-                    key={method}
-                    onClick={() => handlePaymentMethodChange(method)}
-                    className={`p-3 rounded-lg border-2 transition-colors ${
-                      selectedPaymentMethod === method
-                        ? 'border-orange-500 bg-orange-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                    key={method.id}
+                    onClick={() => setSelectedPayment(method.id)}
+                    className={`relative py-4 px-3 rounded-xl border-2 transition-all duration-200 ${
+                      selectedPayment === method.id
+                        ? "border-accent bg-accent/10 shadow-md"
+                        : "border-border hover:border-accent/50 hover:bg-accent/5"
                     }`}
                   >
-                    <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
-                      <span className="text-xs font-medium">{method.toUpperCase()}</span>
-                    </div>
+                    <span className="text-xs font-semibold block text-center">
+                      {method.label}
+                    </span>
                   </button>
                 ))}
               </div>
 
-              <div className="flex items-start mb-6">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  checked={agreedToTerms}
-                  onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 mt-1"
-                />
-                <label htmlFor="terms" className="ml-2 text-sm text-gray-700">
-                  I agree to the{' '}
-                  <a href="#" className="text-orange-600 hover:text-orange-700 underline">
+              <div className="flex items-start space-x-2 pt-2">
+                <Checkbox id="terms" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm leading-relaxed peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                >
+                  I agree to the{" "}
+                  <Link to="#" className="text-accent hover:underline font-medium">
                     Terms & Conditions
-                  </a>
-                  {' '}and{' '}
-                  <a href="#" className="text-orange-600 hover:text-orange-700 underline">
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="#" className="text-accent hover:underline font-medium">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </label>
               </div>
-
-              <button
-                onClick={handleCheckout}
-                disabled={!agreedToTerms || checkoutItems.length === 0}
-                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-lg transition-colors"
-              >
-                Pay {formatPrice(total)}
-              </button>
             </div>
+
+            {/* Checkout Button */}
+            <Button
+              size="lg"
+              className="w-full h-14 text-lg font-serif font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              <CreditCard className="w-5 h-5 mr-2" />
+              Pay ₱{total.toLocaleString()}
+            </Button>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
 
-export default CheckoutPage; 
+export default CheckoutPage;

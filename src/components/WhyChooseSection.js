@@ -5,7 +5,7 @@ const WhyChooseSection = () => {
     {
       icon: <FiHeart className="w-12 h-12" />,
       title: "Ethical & Sustainable",
-      description: "Feel good about your jewellery, crafted with ethically sourced, lab-grown diamonds."
+      description: "Feel good about your jewellery, crafted with ethically sourced, diamonds."
     },
     {
       icon: <FiShield className="w-12 h-12" />,
@@ -33,13 +33,13 @@ const WhyChooseSection = () => {
     <section className="py-12 bg-gray-50 rounded-lg mb-8">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">
-          Experience the VajraBox Difference
+          Discover the Brilliance of VajraBox Diamonds
         </h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 px-6">
         {features.map((feature, index) => (
-          <div key={index} className="text-center">
+          <div key={index} className="text-center p-6 rounded-lg transition-shadow duration-300 ease-in-out hover:shadow-lg cursor-default">
             <div className="flex justify-center mb-4 text-amber-600">
               {feature.icon}
             </div>

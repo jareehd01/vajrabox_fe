@@ -96,6 +96,14 @@ export const JEWELLERY_CATEGORIES = {
     "Filigree Bangles",
     "Bridal Bangles",
   ],
+  "LUXE COLLECTION": [
+    "All Luxe",
+    "High Jewellery",
+    "Red Carpet",
+    "Bridal Couture",
+    "Exclusive Designs",
+    "Limited Edition",
+  ],
 };
 
 
