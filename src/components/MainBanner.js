@@ -3,19 +3,19 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const bannerItems = [
   {
-    title: 'Timeless Elegance',
-    description: 'Discover our exquisite collection of handcrafted jewelry',
-    buttonText: 'Explore Collection',
+    title: 'Experience Extravagance',
+    description: 'Indulge in our opulent selection of meticulously crafted jewels, designed to elevate your every moment.',
+    buttonText: 'Unveil the Collection',
   },
   {
-    title: 'A Style That Defines You',
-    description: 'Find the perfect piece to express your unique personality',
-    buttonText: 'Shop Now',
+    title: 'Define Your Legacy',
+    description: 'Forge your own path with a statement piece that embodies your singular spirit and refined taste.',
+    buttonText: 'Curate Your Style',
   },
   {
-    title: 'Celebrate Your Moments',
-    description: 'Mark your special occasions with a gift that lasts a lifetime',
-    buttonText: 'View More',
+    title: 'Immortalize Your Milestones',
+    description: "Commemorate life's most precious occasions with a timeless treasure that will be cherished for generations.",
+    buttonText: 'Discover Heirlooms',
   },
 ];
 
@@ -44,15 +44,15 @@ const MainBanner = () => {
   }, [currentIndex]);
 
   return (
-    <div className="relative h-[500px] w-full mx-auto overflow-hidden">
+    <div className="relative h-[600px] w-full mx-auto overflow-hidden">
       <div
-        className="w-full h-full bg-gradient-to-r from-gray-400 to-gray-600"
+        className="w-full h-full bg-gradient-to-r from-gray-800 to-black"
       >
-        <div className="w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-20">
-           <div key={currentIndex} className="text-center text-white animate-fadeInUp">
-              <h2 className="text-5xl font-bold mb-4">{bannerItems[currentIndex].title}</h2>
-              <p className="text-xl mb-8">{bannerItems[currentIndex].description}</p>
-              <button className="bg-amber-500 text-white font-bold py-2 px-6 rounded-full hover:bg-amber-600 transition duration-300">
+        <div className="w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-30">
+           <div key={currentIndex} className="text-center text-white animate-fadeInUp px-4">
+              <h2 className="text-6xl font-bold mb-4 tracking-tight">{bannerItems[currentIndex].title}</h2>
+              <p className="text-xl mb-8 max-w-3xl mx-auto">{bannerItems[currentIndex].description}</p>
+              <button className="bg-amber-500 text-white font-bold py-3 px-8 rounded-full hover:bg-amber-600 transition duration-300 text-lg">
                   {bannerItems[currentIndex].buttonText}
               </button>
             </div>
@@ -60,21 +60,21 @@ const MainBanner = () => {
       </div>
 
       {/* Left Arrow */}
-      <div className="absolute top-1/2 left-5 transform -translate-y-1/2 text-white cursor-pointer">
+      <div className="absolute top-1/2 left-5 transform -translate-y-1/2 text-white cursor-pointer p-2 bg-black bg-opacity-25 rounded-full hover:bg-opacity-50 transition-all">
         <FiChevronLeft onClick={prevSlide} size={30} />
       </div>
       {/* Right Arrow */}
-      <div className="absolute top-1/2 right-5 transform -translate-y-1/2 text-white cursor-pointer">
+      <div className="absolute top-1/2 right-5 transform -translate-y-1/2 text-white cursor-pointer p-2 bg-black bg-opacity-25 rounded-full hover:bg-opacity-50 transition-all">
         <FiChevronRight onClick={nextSlide} size={30} />
       </div>
 
-      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-3">
         {bannerItems.map((_, slideIndex) => (
           <div
             key={slideIndex}
             onClick={() => goToSlide(slideIndex)}
-            className={`w-3 h-3 rounded-full cursor-pointer transition-colors duration-300 ${
-              currentIndex === slideIndex ? 'bg-white' : 'bg-gray-400'
+            className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-500 ${
+              currentIndex === slideIndex ? 'bg-white scale-125' : 'bg-gray-400'
             }`}
           ></div>
         ))}
