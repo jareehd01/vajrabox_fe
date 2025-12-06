@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <div>
       <MainBanner />
-      <div className="container mx-auto px-4">
+      <div className="w-[90%] mx-auto px-2">
         <ShopByCategory />
         <ShopByOccasion />
         <WhyChooseSection />

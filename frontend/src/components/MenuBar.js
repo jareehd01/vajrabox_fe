@@ -4,7 +4,6 @@ import { JEWELLERY_CATEGORIES } from "../utils/constants";
 
 const MenuBar = ({ onClose }) => {
   const menuBarRef = useRef(null);
-  const dropdownRef = useRef(null);
 
   return (
     <div 

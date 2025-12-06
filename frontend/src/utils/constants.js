@@ -12,6 +12,17 @@ export const GOLD_CARAT_HALLMARK_MAPPING = {
   "10K": "417",
 };
 
+export const CATEGORY_IMAGE_MAPPING = {
+  RINGS: "https://i.pinimg.com/736x/29/26/93/292693b470f0b00532c0c1f8c505fcfb.jpg",
+  NECKLACES: "https://i.pinimg.com/736x/ec/33/78/ec337802c82b112d175e256336361b08.jpg",
+  EARRINGS: "https://i.pinimg.com/736x/ec/6f/37/ec6f37cce6286df75d43b4bdb09913a9.jpg",
+  MANGALSUTRA: "https://i.pinimg.com/736x/ad/9f/77/ad9f7710e0ae821181c4818a9dc3b788.jpg",
+  PENDANTS: "https://i.pinimg.com/1200x/5c/de/95/5cde957d6cf87a451fed957d3a0ec63e.jpg",
+  BRACELETS: "https://i.pinimg.com/1200x/5f/ee/e4/5feee451281b5333141e8cb3cd8bd796.jpg",
+  NOSEPINS: "https://i.pinimg.com/736x/c1/9a/91/c19a9149fa50682e185b08bb1f52119a.jpg",
+  BANGLES: "https://i.pinimg.com/736x/c5/67/6f/c5676f4a89c37bdb5313ebfeb459f242.jpg"
+} 
+
 export const JEWELLERY_CATEGORIES = {
   RINGS: [
     "All Rings",

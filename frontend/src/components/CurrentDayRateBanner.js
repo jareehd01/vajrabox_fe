@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import {
-  GOLD_RATE_API,
-  GOLD_RATE_API_TOKEN,
   GOLD_CARAT_HALLMARK_MAPPING,
 } from "../utils/constants";
 
 const CurrentDayRateBanner = () => {
-  const [goldRateData, setGoldRateData] = useState({
+  const [goldRateData] = useState({
     timestamp: 1747774625,
     metal: "XAU",
     currency: "INR",

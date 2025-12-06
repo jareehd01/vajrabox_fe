@@ -2,6 +2,13 @@
   channel = "stable-24.05";
   packages = [
     pkgs.nodejs_20
+    pkgs.sudo
+    (pkgs.python3.withPackages (ps: [
+      ps.django
+      ps.whitenoise
+      ps.django-cors-headers
+      ps.psycopg2
+    ]))
   ];
   idx.extensions = [
     "svelte.svelte-vscode"

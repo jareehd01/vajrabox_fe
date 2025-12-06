@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Checkbox } from "../components/ui/checkbox";
-import { ArrowLeft, Minus, Plus, Trash2, CreditCard, Lock } from "lucide-react";
+import { ArrowLeft, Minus, Plus, Trash2, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CheckoutPage = () => {
@@ -11,8 +11,17 @@ const CheckoutPage = () => {
   const [promoCode, setPromoCode] = useState("");
   const [selectedPayment, setSelectedPayment] = useState("apple-pay");
   const [sameAsShipping, setSameAsShipping] = useState(true);
+  const [product, setProduct] = useState(null);
 
-  const itemPrice = 1200;
+  useEffect(() => {
+    const backendUrl = `${window.location.protocol}//${window.location.hostname.replace('3000-', '8000-')}`;
+    fetch(`${backendUrl}/api/product/`)
+      .then(response => response.json())
+      .then(data => setProduct(data))
+      .catch(error => console.error('Error fetching product:', error));
+  }, []);
+
+  const itemPrice = product ? product.price : 0;
   const shipping = 150;
   const discount = 0;
   const subtotal = itemPrice * quantity;
@@ -29,26 +38,27 @@ const CheckoutPage = () => {
               className="inline-flex items-center gap-2 text-gray-700 hover:text-amber-600 transition-colors mb-8 group"
             >
               <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-              <span className="font-medium text-lg">Review Your Selection</span>
+              <span className="font-medium text-xl tracking-wide">Review Your Selection</span>
             </Link>
 
             {/* Product Card */}
+            {product && (
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-lg mb-8">
               <div className="flex gap-6">
                 <div className="w-32 h-32 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200/50">
                   <img
-                    src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=400&fit=crop"
-                    alt="Classic Solitaire"
+                    src={product.image}
+                    alt={product.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-serif text-xl font-semibold text-gray-800 mb-2">Classic Solitaire</h3>
-                  <p className="text-sm text-gray-500 mb-3">
-                    Exquisite .99 Carat Diamond, 14K White Gold Band
+                  <h3 className="font-serif text-2xl font-semibold text-gray-800 mb-2 tracking-wide">{product.name}</h3>
+                  <p className="text-base text-gray-500 mb-3 tracking-wide">
+                    {product.description}
                   </p>
-                  <p className="text-2xl font-serif font-bold text-amber-600 mb-4">
+                  <p className="text-3xl font-serif font-bold text-amber-600 mb-4 tracking-wide">
                     ₱{itemPrice.toLocaleString()}
                   </p>
                   
@@ -76,6 +86,7 @@ const CheckoutPage = () => {
                 </div>
               </div>
             </div>
+            )}
 
             {/* Promo Code */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-lg mb-8">
@@ -86,7 +97,7 @@ const CheckoutPage = () => {
                   placeholder="Enter Gift Code or Promo"
                   className="flex-1 border-gray-300 focus:border-amber-500 h-12"
                 />
-                <Button className="bg-gray-800 hover:bg-black text-white px-8 h-12 text-base">
+                <Button className="bg-gray-800 hover:bg-black text-white px-8 h-12 text-lg tracking-wide">
                   Apply Code
                 </Button>
               </div>
@@ -94,26 +105,26 @@ const CheckoutPage = () => {
 
             {/* Investment Summary */}
             <div className="bg-gradient-to-br from-amber-50 to-gray-50 border-2 border-amber-100 rounded-2xl p-6 shadow-xl">
-              <h3 className="font-serif text-xl font-bold mb-4">Investment Summary</h3>
+              <h3 className="font-serif text-2xl font-bold mb-4 tracking-wide">Investment Summary</h3>
               <div className="space-y-4">
-                <div className="flex justify-between text-base">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium text-gray-800">₱{subtotal.toLocaleString()}</span>
+                <div className="flex justify-between text-lg">
+                  <span className="text-gray-600 tracking-wide">Subtotal</span>
+                  <span className="font-medium text-gray-800 tracking-wide">₱{subtotal.toLocaleString()}</span>
                 </div>
-                 <div className="flex justify-between text-base">
-                  <span className="text-gray-600">White Glove Delivery</span>
-                  <span className="font-medium text-green-600">Complimentary</span>
+                 <div className="flex justify-between text-lg">
+                  <span className="text-gray-600 tracking-wide">White Glove Delivery</span>
+                  <span className="font-medium text-green-600 tracking-wide">Complimentary</span>
                 </div>
                 {discount > 0 && (
-                  <div className="flex justify-between text-base">
-                    <span className="text-emerald-600">Promotional Savings</span>
-                    <span className="font-medium text-emerald-600">-₱{discount}</span>
+                  <div className="flex justify-between text-lg">
+                    <span className="text-emerald-600 tracking-wide">Promotional Savings</span>
+                    <span className="font-medium text-emerald-600 tracking-wide">-₱{discount}</span>
                   </div>
                 )}
                 <div className="border-t border-gray-200 pt-4 mt-4">
                   <div className="flex justify-between items-center">
-                    <span className="font-serif text-xl font-bold">Total Investment</span>
-                    <span className="font-serif text-2xl font-bold text-amber-600">
+                    <span className="font-serif text-2xl font-bold tracking-wide">Total Investment</span>
+                    <span className="font-serif text-3xl font-bold text-amber-600 tracking-wide">
                       ₱{total.toLocaleString()}
                     </span>
                   </div>
@@ -126,10 +137,10 @@ const CheckoutPage = () => {
           <div className="lg:col-span-3">
             {/* Billing Information */}
             <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg mb-8">
-              <h2 className="font-serif text-2xl font-bold mb-6">Your Billing Details</h2>
+              <h2 className="font-serif text-3xl font-bold mb-6 tracking-wide">Your Billing Details</h2>
               <div className="space-y-5">
                 <div>
-                  <Label htmlFor="fullName" className="text-sm font-medium text-gray-700 mb-2 block">
+                  <Label htmlFor="fullName" className="text-base font-medium text-gray-700 mb-2 block tracking-wide">
                     Full Name <span className="text-red-500">*</span>
                   </Label>
                   <Input
@@ -139,7 +150,7 @@ const CheckoutPage = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="email" className="text-sm font-medium text-gray-700 mb-2 block">
+                  <Label htmlFor="email" className="text-base font-medium text-gray-700 mb-2 block tracking-wide">
                     Email Address <span className="text-red-500">*</span>
                   </Label>
                   <Input
@@ -150,7 +161,7 @@ const CheckoutPage = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phone" className="text-sm font-medium text-gray-700 mb-2 block">
+                  <Label htmlFor="phone" className="text-base font-medium text-gray-700 mb-2 block tracking-wide">
                     Phone Number <span className="text-red-500">*</span>
                   </Label>
                   <Input
@@ -161,7 +172,7 @@ const CheckoutPage = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="address" className="text-sm font-medium text-gray-700 mb-2 block">
+                  <Label htmlFor="address" className="text-base font-medium text-gray-700 mb-2 block tracking-wide">
                     Billing Address <span className="text-red-500">*</span>
                   </Label>
                   <Input
@@ -179,7 +190,7 @@ const CheckoutPage = () => {
                   />
                   <label
                     htmlFor="sameShipping"
-                    className="text-sm font-medium text-gray-700 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    className="text-base font-medium text-gray-700 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer tracking-wide"
                   >
                     My billing and shipping address are the same.
                   </label>
@@ -189,7 +200,7 @@ const CheckoutPage = () => {
 
             {/* Payment Method */}
             <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg mb-8">
-              <h2 className="font-serif text-2xl font-bold mb-6">Secure Payment Method</h2>
+              <h2 className="font-serif text-3xl font-bold mb-6 tracking-wide">Secure Payment Method</h2>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-4 mb-6">
                 {[
                   { id: "visa", label: "VISA" },
@@ -201,7 +212,7 @@ const CheckoutPage = () => {
                   <button
                     key={method.id}
                     onClick={() => setSelectedPayment(method.id)}
-                    className={`relative py-4 px-3 rounded-xl border-2 transition-all duration-200 font-medium ${
+                    className={`relative py-4 px-3 rounded-xl border-2 transition-all duration-200 font-medium tracking-wide ${
                       selectedPayment === method.id
                         ? "border-amber-500 bg-amber-50/50 shadow-md"
                         : "border-gray-300 hover:border-amber-400 hover:bg-amber-50/20"
@@ -215,7 +226,7 @@ const CheckoutPage = () => {
                 <Checkbox id="terms" className="w-5 h-5 mt-1" />
                 <label
                   htmlFor="terms"
-                  className="text-sm text-gray-600 leading-relaxed peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  className="text-base text-gray-600 leading-relaxed peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer tracking-wide"
                 >
                   By proceeding, I acknowledge and agree to the VajraBox{" "}
                   <Link to="#" className="text-amber-600 hover:underline font-medium">
@@ -232,7 +243,7 @@ const CheckoutPage = () => {
             {/* Checkout Button */}
             <Button
               size="lg"
-              className="w-full h-16 text-lg font-serif font-semibold bg-gray-900 hover:bg-black text-white shadow-xl hover:shadow-2xl transition-all duration-300"
+              className="w-full h-16 text-xl font-serif font-semibold bg-gray-900 hover:bg-black text-white shadow-xl hover:shadow-2xl transition-all duration-300 tracking-wide"
             >
               <Lock className="w-5 h-5 mr-3" />
               Securely Place Your Order

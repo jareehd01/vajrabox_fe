@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const bannerItems = [
@@ -22,17 +22,17 @@ const bannerItems = [
 const MainBanner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? bannerItems.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
-  };
+  }, [currentIndex]);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     const isLastSlide = currentIndex === bannerItems.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
-  };
+  }, [currentIndex]);
 
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
@@ -41,7 +41,7 @@ const MainBanner = () => {
   useEffect(() => {
     const slideInterval = setInterval(nextSlide, 5000); // Auto-scroll every 5 seconds
     return () => clearInterval(slideInterval);
-  }, [currentIndex]);
+  }, [nextSlide]);
 
   return (
     <div className="relative h-[600px] w-full mx-auto overflow-hidden">
